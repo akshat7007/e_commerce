@@ -10,9 +10,9 @@ import Items from "./Items";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const navigateLogin = () => {
-    navigate("/");
-  };
+  // const navigateLogin = () => {
+  //   navigate("/");
+  // };
   const navigateCart = () => {
     navigate("/cart");
   };
@@ -28,7 +28,7 @@ export default function HomePage() {
               Home
             </Typography>
             <ShoppingCartIcon style={{cursor:"pointer"}} onClick={navigateCart}></ShoppingCartIcon>
-            <Button onClick={navigateLogin} color="inherit">
+            <Button onClick={()=>{localStorage.removeItem('token')}} color="inherit">
               Logout
             </Button>
           </Toolbar>

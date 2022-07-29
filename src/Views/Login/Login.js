@@ -14,6 +14,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState ,useEffect} from "react";
 import AuthService from "../Services/AuthService";
+import {useSelector,useDispatch} from 'react-redux'
+
 
 function Copyright(props) {
   return (
@@ -38,6 +40,11 @@ const theme = createTheme();
 export default function SignIn() {
   const initialValue = { email: "", password: "" };
 
+const dispatch=useDispatch()
+const token =useSelector((data)=>data.user.token)
+console.log(token)
+
+
   const [change, setChange] = useState(initialValue);
   // const [formErrors, setFormErrors] = useState({});
   // const [isSubmit, setIsSubmit] = useState(false);
@@ -48,6 +55,9 @@ export default function SignIn() {
     if (localStorage.getItem('token')) {
       console.log('localstorage',localStorage)
     navigate('/homepage')
+    }
+    else if (!localStorage.getItem('token')) {
+      navigate('/')
   }
   }, [navigate])
 
@@ -157,7 +167,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={()=>dispatch(handleSubmit())}
             noValidate
             sx={{ mt: 1 }}
           >
