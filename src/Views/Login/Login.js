@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState ,useEffect} from "react";
 import AuthService from "../Services/AuthService";
 import {useSelector,useDispatch} from 'react-redux'
+import { getToken } from "../../Store/Slice/UserSlice";
 
 
 function Copyright(props) {
@@ -115,6 +116,7 @@ console.log(token)
         .then((data) => {
           submitPage(data.token);
           console.log("submitpage", data.token);
+          getToken(data.token)
           localStorage.setItem("token", data.token);
         })
         .catch((error) => {
