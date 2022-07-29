@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 
 import { Grid } from "@mui/material";
 
-export default function Items() {
+export default function Product() {
   return (
     <Grid
       style={{

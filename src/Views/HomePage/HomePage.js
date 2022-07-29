@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Items from "./Items";
+import Product from "../HomePage/Product";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -43,19 +43,19 @@ export default function HomePage() {
           justifyContent: "center",
         }}
       >
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
-        <Items />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
+        <Product />
       </div>
     </div>
   );
