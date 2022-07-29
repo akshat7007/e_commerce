@@ -42,9 +42,10 @@ export default function SignIn() {
   const initialValue = { email: "", password: "" };
 
 const dispatch=useDispatch()
-const token =useSelector((data)=>data.user.token)
-console.log(token)
+// const token =useSelector((data)=>data.user.token)
 
+  let tokens = useSelector((cv) => cv.user.tokens)
+  console.log(tokens)
 
   const [change, setChange] = useState(initialValue);
   // const [formErrors, setFormErrors] = useState({});
@@ -53,29 +54,27 @@ console.log(token)
 
   
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (!tokens) {
       console.log('localstorage',localStorage)
     navigate('/homepage')
     }
-    else if (!localStorage.getItem('token')) {
-      navigate('/')
-  }
-  }, [navigate])
+  
+  }, [navigate,tokens])
 
-  const submitPage = (token) => {
-    console.log("tokenss", token);
+  // const submitPage = (token) => {
+  //   console.log("tokenss", token);
 
-    if (token) {
-      navigate("/homepage");
-    } else {
-      navigate("/");
-      alert("404 page error");
-      setChange({
-        email: "",
-        password: "",
-      });
-    }
-  };
+  //   if (token) {
+  //     navigate("/homepage");
+  //   } else {
+  //     navigate("/");
+  //     alert("404 page error");
+  //     setChange({
+  //       email: "",
+  //       password: "",
+  //     });
+  //   }
+  // };
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
@@ -104,20 +103,19 @@ console.log(token)
   };
 
   const handleSubmit = (event) => {
-
-    
-
     event.preventDefault();
     // setFormErrors(validate(change));
     // setIsSubmit(true);
 
-    if (validaton(true)) {
+    if (validaton()) {
       AuthService(change)
         .then((data) => {
-          submitPage(data.token);
+          // submitPage(data.token);
           console.log("submitpage", data.token);
-          getToken(data.token)
+          
           localStorage.setItem("token", data.token);
+         let userToken= localStorage.getItem('token')
+          dispatch(getToken(userToken))
         })
         .catch((error) => {
           console.log("error", error);
@@ -169,7 +167,7 @@ console.log(token)
           </Typography>
           <Box
             component="form"
-            onSubmit={()=>dispatch(handleSubmit())}
+            onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
