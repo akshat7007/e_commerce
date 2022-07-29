@@ -17,7 +17,6 @@ function AuthService(change) {
   });
   return promise;
 
-  // console.log(data.token);
 }
 
 export default AuthService;

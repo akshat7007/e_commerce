@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import AuthService from "../Services/AuthService";
 
 function Copyright(props) {
@@ -41,13 +41,23 @@ export default function SignIn() {
   const [change, setChange] = useState(initialValue);
   // const [formErrors, setFormErrors] = useState({});
   // const [isSubmit, setIsSubmit] = useState(false);
+  const navigate = useNavigate();
+
+  
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      console.log('localstorage',localStorage)
+    navigate('/homepage')
+  }
+  }, [navigate])
 
   const submitPage = (token) => {
-    console.log("token", token);
+    console.log("tokenss", token);
+
     if (token) {
       navigate("/homepage");
     } else {
-      navigate("/")
+      navigate("/");
       alert("404 page error");
       setChange({
         email: "",
@@ -63,7 +73,6 @@ export default function SignIn() {
     });
   };
 
-  const navigate = useNavigate();
 
   const validaton = () => {
     let isvalid = true;
@@ -84,6 +93,9 @@ export default function SignIn() {
   };
 
   const handleSubmit = (event) => {
+
+    
+
     event.preventDefault();
     // setFormErrors(validate(change));
     // setIsSubmit(true);
@@ -92,21 +104,25 @@ export default function SignIn() {
       AuthService(change)
         .then((data) => {
           submitPage(data.token);
-          console.log('submitpage',data.token)
-          localStorage.set('token', data.token);
-
+          console.log("submitpage", data.token);
+          localStorage.setItem("token", data.token);
         })
         .catch((error) => {
           console.log("error", error);
         });
     }
+
+    // else if (GetToken) {
+    //   navigate('/homepage')
+    // }
+    // else if (change) {
+    //   localStorage.getItem('token')
+    //   console.log('getItem',change)
+    // }
   };
 
   
-
   ///////validation//////////
-
-  
 
   // const validate = (values) => {
   //   const errors = {};
