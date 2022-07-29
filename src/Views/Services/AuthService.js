@@ -4,6 +4,7 @@ function AuthService(change) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(change),
+      token: localStorage.getItem('token')
     };
     fetch("https://reqres.in/api/login", formData)
       .then((res) => res.json())

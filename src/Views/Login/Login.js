@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AuthService from "../Services/AuthService";
 
 function Copyright(props) {
@@ -39,14 +39,15 @@ export default function SignIn() {
   const initialValue = { email: "", password: "" };
 
   const [change, setChange] = useState(initialValue);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
+  // const [formErrors, setFormErrors] = useState({});
+  // const [isSubmit, setIsSubmit] = useState(false);
 
-  const submitPage = (data) => {
-    console.log("submit", data);
-    if (data) {
+  const submitPage = (token) => {
+    console.log("token", token);
+    if (token) {
       navigate("/homepage");
     } else {
+      navigate("/")
       alert("404 page error");
       setChange({
         email: "",
@@ -84,13 +85,16 @@ export default function SignIn() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setFormErrors(validate(change));
-    setIsSubmit(true);
+    // setFormErrors(validate(change));
+    // setIsSubmit(true);
 
     if (validaton(true)) {
       AuthService(change)
         .then((data) => {
           submitPage(data.token);
+          console.log('submitpage',data.token)
+          localStorage.set('token', data.token);
+
         })
         .catch((error) => {
           console.log("error", error);
@@ -98,28 +102,30 @@ export default function SignIn() {
     }
   };
 
+  
+
   ///////validation//////////
 
   
 
-  const validate = (values) => {
-    const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    // const regex = ^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$;
-    if (!values.email) {
-      errors.email = "Email is required!";
-    } else if (!regex.test(values.email)) {
-      errors.email = "This is not a valid email format";
-    }
-    if (!values.password) {
-      errors.password = "Password is required!";
-    } else if (values.password.length < 4) {
-      errors.password = "Password must be 4 characters";
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
-    }
-    return errors;
-  };
+  // const validate = (values) => {
+  //   const errors = {};
+  //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+  //   // const regex = ^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$;
+  //   if (!values.email) {
+  //     errors.email = "Email is required!";
+  //   } else if (!regex.test(values.email)) {
+  //     errors.email = "This is not a valid email format";
+  //   }
+  //   if (!values.password) {
+  //     errors.password = "Password is required!";
+  //   } else if (values.password.length < 4) {
+  //     errors.password = "Password must be 4 characters";
+  //   } else if (values.password.length > 10) {
+  //     errors.password = "Password cannot exceed more than 10 characters";
+  //   }
+  //   return errors;
+  // };
 
   return (
     <ThemeProvider theme={theme}>
