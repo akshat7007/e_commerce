@@ -12,11 +12,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import AuthService from "../Services/AuthService";
-import {useSelector,useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import { getToken } from "../../Store/Slice/UserSlice";
-
 
 function Copyright(props) {
   return (
@@ -41,40 +40,26 @@ const theme = createTheme();
 export default function SignIn() {
   const initialValue = { email: "", password: "" };
 
-const dispatch=useDispatch()
-// const token =useSelector((data)=>data.user.token)
+  const dispatch = useDispatch();
 
-  let tokens = useSelector((cv) => cv.user.tokens)
-  console.log(tokens)
+  let tokens = useSelector((cv) => cv.user.tokens);
+  console.log(tokens);
 
   const [change, setChange] = useState(initialValue);
-  // const [formErrors, setFormErrors] = useState({});
-  // const [isSubmit, setIsSubmit] = useState(false);
+  
   const navigate = useNavigate();
 
-  
   useEffect(() => {
-    if (!tokens) {
-      console.log('localstorage',localStorage)
-    navigate('/homepage')
+    let userToken = localStorage.getItem("token");
+    dispatch(getToken(userToken));
+  }, []);
+
+  useEffect(() => {
+    if (tokens) {
+      console.log("localstorage", localStorage);
+      navigate("/homepage");
     }
-  
-  }, [navigate,tokens])
-
-  // const submitPage = (token) => {
-  //   console.log("tokenss", token);
-
-  //   if (token) {
-  //     navigate("/homepage");
-  //   } else {
-  //     navigate("/");
-  //     alert("404 page error");
-  //     setChange({
-  //       email: "",
-  //       password: "",
-  //     });
-  //   }
-  // };
+  }, [navigate, tokens]);
 
   const inputHandler = (e) => {
     const { value, name } = e.target;
@@ -82,7 +67,6 @@ const dispatch=useDispatch()
       return { ...preValue, [name]: value };
     });
   };
-
 
   const validaton = () => {
     let isvalid = true;
@@ -112,39 +96,16 @@ const dispatch=useDispatch()
         .then((data) => {
           // submitPage(data.token);
           console.log("submitpage", data.token);
-          
+
           localStorage.setItem("token", data.token);
-         let userToken= localStorage.getItem('token')
-          dispatch(getToken(userToken))
+
+          dispatch(getToken(data.token));
         })
         .catch((error) => {
           console.log("error", error);
         });
     }
-
   };
-
-  
-  ///////validation//////////
-
-  // const validate = (values) => {
-  //   const errors = {};
-  //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-  //   // const regex = ^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$;
-  //   if (!values.email) {
-  //     errors.email = "Email is required!";
-  //   } else if (!regex.test(values.email)) {
-  //     errors.email = "This is not a valid email format";
-  //   }
-  //   if (!values.password) {
-  //     errors.password = "Password is required!";
-  //   } else if (values.password.length < 4) {
-  //     errors.password = "Password must be 4 characters";
-  //   } else if (values.password.length > 10) {
-  //     errors.password = "Password cannot exceed more than 10 characters";
-  //   }
-  //   return errors;
-  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -197,7 +158,6 @@ const dispatch=useDispatch()
             />
 
             <Button
-              // onClick={navigateHome}
               type="submit"
               fullWidth
               variant="contained"
