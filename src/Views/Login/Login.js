@@ -112,13 +112,6 @@ export default function SignIn() {
         });
     }
 
-    // else if (GetToken) {
-    //   navigate('/homepage')
-    // }
-    // else if (change) {
-    //   localStorage.getItem('token')
-    //   console.log('getItem',change)
-    // }
   };
 
   
